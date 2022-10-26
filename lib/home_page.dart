@@ -5,6 +5,7 @@ import 'package:quiz_app/widgets/appBar_widget.dart';
 class HomeWidget extends StatelessWidget {
   const HomeWidget({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
