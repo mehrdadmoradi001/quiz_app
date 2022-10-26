@@ -13,15 +13,7 @@ class Application extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'dana'),
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.indigo[800],
-          title: Text('کوییز کویین',style: TextStyle(fontWeight: FontWeight.bold),),
-          centerTitle: true,
-        ),
-        body: HomeWidget(),
-      ),
+      home:  HomeWidget(),
     );
   }
 }
