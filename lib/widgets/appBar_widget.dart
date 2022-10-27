@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-PreferredSizeWidget AppBarWidget(){
+PreferredSizeWidget AppBarWidget(String titleAppBar){
   return AppBar(
     backgroundColor: Colors.indigo[800],
     title: Text(
-      'کوییز کویین',
+      titleAppBar,
       style: TextStyle(fontWeight: FontWeight.bold),
     ),
     centerTitle: true,);

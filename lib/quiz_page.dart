@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/constants/Constants.dart';
+import 'package:quiz_app/data/Question.dart';
 import 'package:quiz_app/widgets/appBar_widget.dart';
 
 class QuizPage extends StatefulWidget {
@@ -11,14 +12,17 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   int shownQuestionIndex = 0;
-
+  Question? selectedQuestion;
+  bool isFinalAnswerSubmitted = false;
 
   @override
   Widget build(BuildContext context) {
-    String questionImageIndex = getQuestionsList()[shownQuestionIndex].imageNumber!;
+    selectedQuestion = getQuestionsList()[shownQuestionIndex];
+    String questionImageIndex =
+        getQuestionsList()[shownQuestionIndex].imageNumber!;
 
     return Scaffold(
-      appBar: AppBarWidget(),
+      appBar: AppBarWidget('سوال ${shownQuestionIndex + 1} از ${getQuestionsList().length }  '),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,42 +36,52 @@ class _QuizPageState extends State<QuizPage> {
               height: 30,
             ),
             Text(
-              getQuestionsList()[shownQuestionIndex].questionTitle!,
+              selectedQuestion!.questionTitle!,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
-            ListTile(
-              title: Text(
-                'پاسخ اول',
-                textAlign: TextAlign.end,
+            ...List.generate(4, (index) => getOptionItem(index)),
+            if(isFinalAnswerSubmitted)
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red[700],
+                  minimumSize: Size(200.0, 50.0),
+                ),
+                child: Text(
+                  'مشاهده نتایج کوییز',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              onTap: (){
-                setState(() {
-                  shownQuestionIndex = 1;
-                });
-              },
-            ),
-            ListTile(
-              title: Text(
-                'پاسخ دوم',
-                textAlign: TextAlign.end,
-              ),
-            ),
-            ListTile(
-              title: Text(
-                'پاسخ سوم',
-                textAlign: TextAlign.end,
-              ),
-            ),
-            ListTile(
-              title: Text(
-                'پاسخ چهارم',
-                textAlign: TextAlign.end,
-              ),
-            ),
           ],
         ),
       ),
     );
   }
+
+
+  Widget getOptionItem(int index) => ListTile(
+        title: Text(
+          selectedQuestion!.answerList![index],
+          textAlign: TextAlign.end,
+        ),
+        onTap: () {
+          if (selectedQuestion!.correctAnswer! == index) {
+            print('correct');
+          } else {
+            print('wrong');
+          }
+
+          if(shownQuestionIndex == getQuestionsList().length - 1){
+            isFinalAnswerSubmitted = true;
+          }
+
+          setState(() {
+            if (shownQuestionIndex < getQuestionsList().length - 1)
+              shownQuestionIndex++;
+          });
+
+        },
+      );
 }
