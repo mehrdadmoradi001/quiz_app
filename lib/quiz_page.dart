@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/constants/Constants.dart';
 import 'package:quiz_app/data/Question.dart';
+import 'package:quiz_app/screens/result_screen.dart';
 import 'package:quiz_app/widgets/appBar_widget.dart';
 
 class QuizPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class _QuizPageState extends State<QuizPage> {
   int shownQuestionIndex = 0;
   Question? selectedQuestion;
   bool isFinalAnswerSubmitted = false;
+  int correctAnswerQuiz = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,8 @@ class _QuizPageState extends State<QuizPage> {
         getQuestionsList()[shownQuestionIndex].imageNumber!;
 
     return Scaffold(
-      appBar: AppBarWidget('سوال ${shownQuestionIndex + 1} از ${getQuestionsList().length }  '),
+      appBar: AppBarWidget(
+          'سوال ${shownQuestionIndex + 1} از ${getQuestionsList().length}  ' , Colors.indigo[800]),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,9 +44,15 @@ class _QuizPageState extends State<QuizPage> {
               style: TextStyle(fontSize: 18),
             ),
             ...List.generate(4, (index) => getOptionItem(index)),
-            if(isFinalAnswerSubmitted)
+            if (isFinalAnswerSubmitted)
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ResultScreen(correctAnswerResult: correctAnswerQuiz,),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red[700],
                   minimumSize: Size(200.0, 50.0),
@@ -60,7 +69,6 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-
   Widget getOptionItem(int index) => ListTile(
         title: Text(
           selectedQuestion!.answerList![index],
@@ -68,12 +76,12 @@ class _QuizPageState extends State<QuizPage> {
         ),
         onTap: () {
           if (selectedQuestion!.correctAnswer! == index) {
-            print('correct');
+            correctAnswerQuiz++;
           } else {
             print('wrong');
           }
 
-          if(shownQuestionIndex == getQuestionsList().length - 1){
+          if (shownQuestionIndex == getQuestionsList().length - 1) {
             isFinalAnswerSubmitted = true;
           }
 
@@ -81,7 +89,6 @@ class _QuizPageState extends State<QuizPage> {
             if (shownQuestionIndex < getQuestionsList().length - 1)
               shownQuestionIndex++;
           });
-
         },
       );
 }

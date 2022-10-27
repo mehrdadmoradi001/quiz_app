@@ -10,7 +10,7 @@ class HomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBarWidget('کوییز کویین'),
+      appBar: AppBarWidget('کوییز کویین',Colors.indigo[800]),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
